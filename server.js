@@ -1,5 +1,6 @@
-const express = require("express");
-const path = require("path");
+const express   = require("express");
+const path      = require("path");
+const fs        = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,11 +15,17 @@ app.get("/", function (req, res) {
 });
 
 app.get("/notes", function (req, res) {
-    // display home HTML
+    // display notes HTML
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 app.get("/api/notes", function (req, res) {
-    // display home HTML
-    res.sendFile(path.join(__dirname, "./public/notes.html"));
+
+    const str = fs.readFileSync(path.join(__dirname, "./db/db.json"), function(err, data) {
+                    if (err) throw err;
+                    console.log(data);
+                });
+
+    return res.json(JSON.parse(str));
 });
+
