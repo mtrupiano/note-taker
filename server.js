@@ -47,7 +47,7 @@ app.post("/api/notes", function (req, res) {
 
     notes.push(newNote);
 
-    fs.writeFile(dbJsonPath, JSON.stringify(notes), function(err) {
+    fs.writeFile(dbPath, JSON.stringify(notes), function(err) {
         if (err) throw err;
     });
 
@@ -69,8 +69,7 @@ app.delete("/api/notes/:id", function(req, res) {
         if (err) throw err;
     });
 
-    return true;
-
+    return res.send(true);
 });
 
 // Port listener
