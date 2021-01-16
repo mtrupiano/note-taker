@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.static(__dirname + "/public"));
+
 app.get("/", function (req, res) {
     // display home HTML
     res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -27,6 +29,12 @@ app.get("/api/notes", function (req, res) {
                 });
 
     return res.json(JSON.parse(str));
+});
+
+app.post("/api/notes", function (req, res) {
+    const newNote = req.body;
+    console.log(newNote);
+    return res.json(newNote);
 });
 
 app.listen(PORT, function () {
