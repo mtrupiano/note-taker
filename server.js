@@ -9,18 +9,20 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Serve static content, style, and logic
 app.use(express.static(__dirname + "/public"));
 
+// Display the home page
 app.get("/", function (req, res) {
-    // display home HTML
     res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
+// Display the 'Notes' page
 app.get("/notes", function (req, res) {
-    // display notes HTML
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
+// Read saved notes
 app.get("/api/notes", function (req, res) {
 
     const str = fs.readFileSync(path.join(__dirname, "./db/db.json"), function(err, data) {
@@ -31,6 +33,7 @@ app.get("/api/notes", function (req, res) {
     return res.json(JSON.parse(str));
 });
 
+// Save a new note to the ''database''
 app.post("/api/notes", function (req, res) {
     const newNote = req.body;
     console.log(newNote);
@@ -48,6 +51,7 @@ app.post("/api/notes", function (req, res) {
     return res.json(newNote);
 });
 
+// Port listener
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });
