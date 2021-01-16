@@ -12,6 +12,8 @@ app.use(express.json());
 // Serve static content, style, and logic
 app.use(express.static(__dirname + "/public"));
 
+let idCounter = 1;
+
 // Display the home page
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -36,6 +38,8 @@ app.get("/api/notes", function (req, res) {
 // Save a new note to the ''database''
 app.post("/api/notes", function (req, res) {
     const newNote = req.body;
+    newNote.id = idCounter;
+    idCounter++;
     console.log(newNote);
     let dbJsonPath = path.join(__dirname, "db", "db.json");
     const notes = JSON.parse(fs.readFileSync(dbJsonPath, function(err, data) {
