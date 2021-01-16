@@ -34,6 +34,17 @@ app.get("/api/notes", function (req, res) {
 app.post("/api/notes", function (req, res) {
     const newNote = req.body;
     console.log(newNote);
+    let dbJsonPath = path.join(__dirname, "db", "db.json");
+    const notes = JSON.parse(fs.readFileSync(dbJsonPath, function(err, data) {
+                                if (err) throw err;
+                             }));
+
+    notes.push(newNote);
+
+    fs.writeFile(dbJsonPath, JSON.stringify(notes), function(err) {
+        if (err) throw err;
+    });
+
     return res.json(newNote);
 });
 
