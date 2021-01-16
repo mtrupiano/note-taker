@@ -29,3 +29,6 @@ app.get("/api/notes", function (req, res) {
     return res.json(JSON.parse(str));
 });
 
+app.listen(PORT, function () {
+    console.log("App listening on PORT " + PORT);
+});
