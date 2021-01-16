@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 let idCounter = 1;
+const dbPath = path.join(__dirname, "db", "db.json");
 
 // Display the home page
 app.get("/", function (req, res) {
@@ -27,7 +28,7 @@ app.get("/notes", function (req, res) {
 // Read saved notes
 app.get("/api/notes", function (req, res) {
 
-    const str = fs.readFileSync(path.join(__dirname, "./db/db.json"), function(err, data) {
+    const str = fs.readFileSync(dbPath, function(err, data) {
                     if (err) throw err;
                     console.log(data);
                 });
@@ -40,9 +41,7 @@ app.post("/api/notes", function (req, res) {
     const newNote = req.body;
     newNote.id = idCounter;
     idCounter++;
-    console.log(newNote);
-    let dbJsonPath = path.join(__dirname, "db", "db.json");
-    const notes = JSON.parse(fs.readFileSync(dbJsonPath, function(err, data) {
+    const notes = JSON.parse(fs.readFileSync(dbPath, function(err, data) {
                                 if (err) throw err;
                              }));
 
@@ -53,6 +52,25 @@ app.post("/api/notes", function (req, res) {
     });
 
     return res.json(newNote);
+});
+
+app.delete("/api/notes/:id", function(req, res) {
+
+    const arr = JSON.parse (
+                    fs.readFileSync(dbPath, function (err, data) {
+                                    if (err) throw err;
+                    })
+                );
+
+    const toDelete = arr.findIndex(e => e.id == req.params.id );
+    arr.splice(toDelete, 1);
+    
+    fs.writeFileSync(dbPath, JSON.stringify(arr), function(err) {
+        if (err) throw err;
+    });
+
+    return true;
+
 });
 
 // Port listener
