@@ -19,5 +19,5 @@ Notes page:
 
 ## Questions
 Contact me via the links below with any questions.
- - github.com/mtrupiano
+ - [github.com/mtrupiano](https://github.com/mtrupiano)
  - mtrupiano2@gmail.com
